@@ -1,63 +1,57 @@
 package com.ecommerce.resource;
 
-import com.ecommerce.dto.PianoRequestDTO;
+import com.ecommerce.dto.PianoDTO;
 import com.ecommerce.dto.PianoResponseDTO;
 import com.ecommerce.service.PianoService;
 
-import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import java.util.List;
 
-@RegisterForReflection
 @Path("/pianos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 class PianoResource {
+
     @Inject
-    PianoService pianoService;
-
-    public PianoResource() {
-
-    }
+    PianoService service;
 
     @GET
     public List<PianoResponseDTO> listarTodos() {
-        return pianoService.listarTodos();
+        return service.listarTodos();
     }
 
     @GET
     @Path("/{id}")
     public PianoResponseDTO buscarPorId(@PathParam("id") Long id) {
-        return pianoService.buscarPorId(id);
+        return service.buscarPorId(id);
     }
 
     @POST
-    public Response criarPiano(PianoRequestDTO dto) {
-        PianoResponseDTO response = pianoService.criarPiano(dto);
-        return Response.status(Response.Status.CREATED).entity(response).build();
+    public PianoResponseDTO criarPiano(PianoDTO dto) {
+        return service.create(dto);
     }
 
     @PUT
     @Path("/{id}")
-    public PianoResponseDTO atualizarPiano(@PathParam("id") Long id, PianoRequestDTO dto) {
-        return pianoService.atualizarPiano(id, dto);
+    public void atualizarPiano(Long id, PianoDTO dto) {
+        service.update(id, dto);
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deletarPiano(@PathParam("id") Long id) {
-        pianoService.deletarPiano(id);
-        return Response.status(Response.Status.NO_CONTENT).build();
+    @Transactional
+    public void deletarPiano(Long id) {
+        service.delete(id);
     }
 
     @GET
     @Path("/fabricante/{fabricante}")
-    public List<PianoResponseDTO> buscarPorFabricante(@PathParam("fabricante") String fabricante) {
-        return pianoService.buscarPorFabricante(fabricante);
+    public PianoResponseDTO buscarPorFabricante(String fabricante) {
+        return service.buscarPorFabricante(fabricante);
     }
 }

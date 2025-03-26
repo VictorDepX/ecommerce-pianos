@@ -9,6 +9,6 @@ import java.util.List;
 public class PianoRepository implements PanacheRepository<Piano> {
     
     public List<Piano> buscarPorFabricante(String fabricante) {
-        return find("fabricante", fabricante).list();
+        return find("Select p From Piano p WHERE p.fabricante = ?1 ", fabricante).firstResult();
     }
 }

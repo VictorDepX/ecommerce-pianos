@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "pianos")
-public class Piano extends PanacheEntity {
+public class Piano extends DefaultEntity {
     public String modelo;
     public String fabricante;
     public int numeroDeTeclas;

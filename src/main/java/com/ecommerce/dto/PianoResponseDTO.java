@@ -14,7 +14,10 @@ public record PianoResponseDTO(
     String material,
     TipoPiano tipo
 ) {
-    public static PianoResponseDTO fromEntity(Piano piano) {
+    public static PianoResponseDTO valueOf(Piano piano) {
+        
+        if (piano == null)
+            return null;
         return new PianoResponseDTO(
             piano.id,
             piano.modelo,
