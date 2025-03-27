@@ -7,6 +7,8 @@ import com.ecommerce.repository.PianoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ValidationException;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
@@ -67,7 +69,14 @@ public class PianoServiceImpl implements PianoService {
 
 
     @Override
-    public List<PianoResponseDTO> buscarPorFabricante(String fabricante) {
-        return pianoRepository.findAll().stream().map(p -> PianoResponseDTO.valueOf(p)).toList();
+    public List<Piano> buscarPorFabricante(String fabricante) {
+        List<Piano> piano = pianoRepository.buscarPorFabricante(fabricante);
+        if (fabricante == null || fabricante.trim().isEmpty()) {
+            throw new ValidationException("O campo não pode estar vazio.");
+        }
+        if (piano == null || piano.isEmpty()) {
+            throw new NotFoundException("Nenhum cliente encontrado com o nome: " + fabricante);
+        }
+        return piano;
     }
 }

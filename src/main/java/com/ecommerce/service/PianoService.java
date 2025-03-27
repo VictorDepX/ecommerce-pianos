@@ -1,6 +1,7 @@
 package com.ecommerce.service;
 
 import com.ecommerce.dto.PianoResponseDTO;
+import com.ecommerce.model.Piano;
 import com.ecommerce.dto.PianoDTO;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface PianoService {
     void update(long id, PianoDTO piano);
     void delete(long id);
     PianoResponseDTO buscarPorId(long id);
-    List<PianoResponseDTO> buscarPorFabricante(String fabricante);
+    List<Piano> buscarPorFabricante(String fabricante);
     List<PianoResponseDTO> listarTodos();
 
 }
