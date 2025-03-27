@@ -1,10 +1,8 @@
 package com.ecommerce.dto;
 
 import com.ecommerce.model.Piano;
-import io.quarkus.runtime.annotations.RegisterForReflection;
 import com.ecommerce.enumerator.TipoPiano;
 
-@RegisterForReflection
 public record PianoResponseDTO(
     Long id,
     String modelo,
@@ -19,13 +17,13 @@ public record PianoResponseDTO(
         if (piano == null)
             return null;
         return new PianoResponseDTO(
-            piano.id,
-            piano.modelo,
-            piano.fabricante,
-            piano.numeroDeTeclas,
-            piano.possuiPedais,
-            piano.material,
-            piano.tipo
+            piano.getId(),
+            piano.getModelo(),
+            piano.getFabricante(),
+            piano.getNumerodeteclas(),
+            piano.getPossuipedais(),
+            piano.getMaterial(),
+            piano.getTipo()
         );
     }
 }

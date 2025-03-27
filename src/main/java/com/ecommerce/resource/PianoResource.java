@@ -51,7 +51,7 @@ class PianoResource {
 
     @GET
     @Path("/fabricante/{fabricante}")
-    public PianoResponseDTO buscarPorFabricante(String fabricante) {
+    public List<PianoResponseDTO> buscarPorFabricante(String fabricante) {
         return service.buscarPorFabricante(fabricante);
     }
 }

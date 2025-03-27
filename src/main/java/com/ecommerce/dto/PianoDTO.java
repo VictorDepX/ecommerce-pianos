@@ -5,10 +5,10 @@ import com.ecommerce.enumerator.TipoPiano;
 public record PianoDTO(
     String modelo,
     String fabricante,
-    int numeroDeTeclas,
+    Integer numeroDeTeclas,
     boolean possuiPedais,
     String material,
-    TipoPiano tipo
-) {
+    TipoPiano tipo,
+    Integer idPiano) {
 
 }

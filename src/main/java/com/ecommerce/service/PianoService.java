@@ -11,7 +11,7 @@ public interface PianoService {
     void update(long id, PianoDTO piano);
     void delete(long id);
     PianoResponseDTO buscarPorId(long id);
-    PianoResponseDTO buscarPorFabricante(String fabricante);
+    List<PianoResponseDTO> buscarPorFabricante(String fabricante);
     List<PianoResponseDTO> listarTodos();
 
 }
