@@ -15,7 +15,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
-class PianoResource {
+public class PianoResource {
 
     @Inject
     PianoService service;
@@ -38,6 +38,7 @@ class PianoResource {
 
     @PUT
     @Path("/{id}")
+    @Transactional
     public void atualizarPiano(Long id, PianoDTO dto) {
         service.update(id, dto);
     }
