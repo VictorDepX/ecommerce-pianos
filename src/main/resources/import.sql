@@ -15,3 +15,38 @@ VALUES
 ('Kawai Pianos', '11223344000166', '11955553333'),
 ('Steinway & Sons', '99887766000155', '21333332222');
 
+INSERT INTO estados (nome, sigla) 
+VALUES
+('São Paulo', 'SP'),
+('Rio de Janeiro', 'RJ'),
+('Minas Gerais', 'MG'),
+('Bahia', 'BA'),
+('Paraná', 'PR');
+
+-- Municípios de São Paulo
+INSERT INTO municipios (nome, estado_id) VALUES
+('São Paulo', 1),
+('Campinas', 1),
+('Santos', 1);
+
+-- Municípios do Rio de Janeiro
+INSERT INTO municipios (nome, estado_id) VALUES
+('Rio de Janeiro', 2),
+('Niterói', 2);
+
+-- Municípios de Minas Gerais
+INSERT INTO municipios (nome, estado_id) VALUES
+('Belo Horizonte', 3),
+('Uberlândia', 3);
+
+-- Municípios da Bahia
+INSERT INTO municipios (nome, estado_id) VALUES
+('Salvador', 4),
+('Feira de Santana', 4);
+
+-- Municípios do Paraná
+INSERT INTO municipios (nome, estado_id) VALUES
+('Curitiba', 5),
+('Londrina', 5);
+
+

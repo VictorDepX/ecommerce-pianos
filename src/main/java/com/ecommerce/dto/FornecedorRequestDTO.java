@@ -16,6 +16,6 @@ public record FornecedorRequestDTO(
 
     @NotBlank(message = "Telefone não pode estar em branco")
     @Size(max = 20, message = "Telefone pode ter no máximo 20 caracteres")
-    String telefone
+    String telefone) {
 
-) {}
+}

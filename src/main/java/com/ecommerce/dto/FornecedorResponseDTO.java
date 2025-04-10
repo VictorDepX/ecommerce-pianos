@@ -8,11 +8,12 @@ public record FornecedorResponseDTO(
     String cnpj, 
     String telefone
 ) { 
-    public static FornecedorResponseDTO fromEntity(Fornecedor f) {
+    public static FornecedorResponseDTO fromEntity(Fornecedor fornecedor) {
         return new FornecedorResponseDTO(
-            f.getId(), 
-            f.getNome(), 
-            f.getCnpj(), 
-            f.getTelefone());
+            fornecedor.getId(), 
+            fornecedor.getNome(), 
+            fornecedor.getCnpj(), 
+            fornecedor.getTelefone()
+            );
     }
 }
