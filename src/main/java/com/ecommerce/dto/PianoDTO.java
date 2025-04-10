@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 
 public record PianoDTO(
 
-    @NotBlank(message = "Não pode estár vazio")
+    @NotBlank(message = "Não pode estar vazio")
     String modelo,
     String fabricante,
     

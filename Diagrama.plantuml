@@ -1,0 +1,172 @@
+@startuml
+Abstract class Pessoa {
+  - nome: String
+  - telefone: String
+  - cpf: String
+}
+
+class Usuario extends Pessoa {
+  - id: Long
+  - email: String
+  - senha: String
+  + Perfil: perfil
+}
+
+class Funcionario extends Usuario {
+  - id: Long
+  - salario: Double
+  - departamento: String
+}
+
+class Cliente extends Usuario {
+  - id: Long
+  + EnderecoCliente: Endereco
+}
+
+class Fornecedor {
+  - id: Long
+  - nome: String
+  - cnpj: String
+  - telefone: String
+}
+
+class Piano {
+  - id: Long
+  - modelo: String
+  - preco: Double
+  - quantidadeEstoque: int
+  + TipoPiano: tipoPiano
+  + Marca: marca
+  + Fornecedor: fornecedor
+}
+
+class Marca {
+  - id:Long
+  - nome: String
+  - cnpj: String
+}
+
+class Pedido {
+  - id: Long
+  - dataCriacao: LocalDateTime
+  - status: StatusPedido
+  - total: Double
+  + List<ItemPedido>: itens
+  + Cliente: cliente
+  + EnderecoPedido: Endereco
+  + Pagamento: pagamento
+}
+
+class ItemPedido {
+  - id: Long
+  - quantidade: int
+  - subtotal: Double
+  + Piano: piano
+}
+
+interface Pagamento {
+  - id: Long
+  - dataPagamento: LocalDateTime
+  - valorPago: Double
+  - Status: StatusPagamento 
+}
+
+class Pix implements Pagamento {
+  - chave: String
+  - qr: String
+}
+
+class Cartao implements Pagamento {
+  - nomeTitular: String
+  - numero: Long
+  - vencimento: LocalDate
+  - bandeira: String
+  - cvv: Long
+}
+
+class Boleto implements Pagamento {
+  - codigo: String
+  - vencimento: LocalDate
+  - emissao: LocalDate
+  - qr: String
+}
+
+class Endereco {
+  - id: Long
+  - rua: String
+  - numero: String
+  - bairro: String
+  - cidade: String
+  - cep: String
+  + Municipio: municipio
+  + Estado: estado
+}
+
+class Municipio {
+  - id: Long
+  - nome: String
+  + Estado: estado
+}
+
+class Estado{
+  - id: Long
+  - nome: String
+  - sigla: String
+}
+
+class EnderecoPedido extends Endereco {}
+class EnderecoCliente extends Endereco {}
+
+enum TipoPiano {
+  - ACOUSTICO
+  - DIGITAL
+  - ELETRONICO
+}
+
+enum StatusPedido {
+  - PENDENTE
+  - PROCESSANDO
+  - ENVIADO
+  - ENTREGUE
+  - CANCELADO
+}
+
+enum TipoEndereco {
+  - RESIDENCIAL
+  - COMERCIAL
+}
+
+enum MetodoPagamento {
+  - CARTAO_CREDITO
+  - BOLETO
+  - PIX
+}
+
+enum StatusPagamento {
+  - PENDENTE
+  - CONCLUIDO
+  - CANCELADO
+}
+
+enum Perfil {
+  - FUNCIONARIO
+  - CLIENTE
+}
+
+Cliente "1" --> "*" Pedido
+Pedido "1" --> "*" ItemPedido
+ItemPedido "1" -up-> "1" Piano
+Pedido "1" --> "1" EnderecoPedido
+Cliente "1" --> "1" EnderecoCliente
+Pedido "1" --> "1" Pagamento
+StatusPedido <-- Pedido
+Fornecedor "1" <-- "*" Piano
+Endereco "1" --> "1" Municipio
+TipoEndereco <-- Endereco
+Municipio "1" --> "1" Estado
+MetodoPagamento <-- Pedido
+StatusPagamento <-up- Pagamento
+TipoPiano *-- Piano
+Perfil <-- Usuario
+Marca *-- Piano
+@enduml
