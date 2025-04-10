@@ -67,8 +67,9 @@ public class PianoServiceImpl implements PianoService {
 
 
     @Override
-    public List<PianoResponseDTO> buscarPorFabricante(String fabricante) {
-        return pianoRepository.buscarPorFabricante(fabricante)
-        .stream().map(p -> PianoResponseDTO.valueOf(p)).toList();
+    public Response buscarPorFabricante(String fabricante) {
+        Piano p = pianoRepository.buscarPorFabricante(fabricante);
+        if (p == null) return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(PianoResponseDTO.valueOf(p)).build();
     }
 }
