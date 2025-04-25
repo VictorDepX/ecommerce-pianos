@@ -1,26 +1,28 @@
 @startuml
-Abstract class Pessoa {
+abstract class Pessoa {
   - nome: String
   - telefone: String
   - cpf: String
 }
 
-class Usuario extends Pessoa {
+class Usuario {
   - id: Long
   - email: String
   - senha: String
   + Perfil: perfil
 }
 
-class Funcionario extends Usuario {
+class Funcionario extends Pessoa {
   - id: Long
   - salario: Double
   - departamento: String
+  + Usuario: usuario
 }
 
-class Cliente extends Usuario {
+class Cliente extends Pessoa {
   - id: Long
-  + EnderecoCliente: Endereco
+  + List<EnderecoCliente>: enderecos
+  + Usuario: usuario
 }
 
 class Fornecedor {
@@ -28,6 +30,14 @@ class Fornecedor {
   - nome: String
   - cnpj: String
   - telefone: String
+  + List<Marca>: marcas
+}
+
+class Marca {
+  - id: Long
+  - nome: String
+  - cnpj: String
+  + List<Fornecedor>: fornecedores
 }
 
 class Piano {
@@ -38,12 +48,6 @@ class Piano {
   + TipoPiano: tipoPiano
   + Marca: marca
   + Fornecedor: fornecedor
-}
-
-class Marca {
-  - id:Long
-  - nome: String
-  - cnpj: String
 }
 
 class Pedido {
@@ -64,19 +68,19 @@ class ItemPedido {
   + Piano: piano
 }
 
-interface Pagamento {
+abstract class Pagamento {
   - id: Long
   - dataPagamento: LocalDateTime
   - valorPago: Double
   - Status: StatusPagamento 
 }
 
-class Pix implements Pagamento {
+class Pix extends Pagamento {
   - chave: String
   - qr: String
 }
 
-class Cartao implements Pagamento {
+class Cartao extends Pagamento {
   - nomeTitular: String
   - numero: Long
   - vencimento: LocalDate
@@ -84,7 +88,7 @@ class Cartao implements Pagamento {
   - cvv: Long
 }
 
-class Boleto implements Pagamento {
+class Boleto extends Pagamento {
   - codigo: String
   - vencimento: LocalDate
   - emissao: LocalDate
@@ -98,6 +102,7 @@ class Endereco {
   - bairro: String
   - cidade: String
   - cep: String
+  - tipoEndereco: TipoEndereco
   + Municipio: municipio
   + Estado: estado
 }
@@ -108,7 +113,7 @@ class Municipio {
   + Estado: estado
 }
 
-class Estado{
+class Estado {
   - id: Long
   - nome: String
   - sigla: String
@@ -157,9 +162,10 @@ Cliente "1" --> "*" Pedido
 Pedido "1" --> "*" ItemPedido
 ItemPedido "1" -up-> "1" Piano
 Pedido "1" --> "1" EnderecoPedido
-Cliente "1" --> "1" EnderecoCliente
 Pedido "1" --> "1" Pagamento
 StatusPedido <-- Pedido
+Fornecedor "*" --> "*" Marca : fornece >
+Marca "*" --> "*" Fornecedor : representada por >
 Fornecedor "1" <-- "*" Piano
 Endereco "1" --> "1" Municipio
 TipoEndereco <-- Endereco
@@ -169,4 +175,7 @@ StatusPagamento <-up- Pagamento
 TipoPiano *-- Piano
 Perfil <-- Usuario
 Marca *-- Piano
+Cliente "1" --> "*" EnderecoCliente
+Cliente "1" --> "1" Usuario
+Funcionario "1" --> "1" Usuario
 @enduml
