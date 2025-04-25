@@ -20,6 +20,30 @@ public class Piano extends DefaultEntity {
     @Enumerated(EnumType.STRING)
     private TipoPiano tipo;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "marca_id")
+    private Marca marca;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
     public TipoPiano getTipo() {
         return tipo;
     }

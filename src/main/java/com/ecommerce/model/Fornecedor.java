@@ -1,10 +1,9 @@
 package com.ecommerce.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import java.util.List;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "fornecedores")
@@ -22,12 +21,42 @@ public class Fornecedor extends DefaultEntity {
     @Size(max = 20, message = "Telefone pode ter no máximo 20 caracteres")
     private String telefone;
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    @ManyToMany
+    @JoinTable(
+        name = "fornecedor_marca",
+        joinColumns = @JoinColumn(name = "fornecedor_id"),
+        inverseJoinColumns = @JoinColumn(name = "marca_id")
+    )
+    private List<Marca> marcas;
 
-    public String getCnpj() { return cnpj; }
-    public void setCnpj(String cnpj) { this.cnpj = cnpj; }
+    public String getNome() {
+        return nome;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public List<Marca> getMarcas() {
+        return marcas;
+    }
+
+    public void setMarcas(List<Marca> marcas) {
+        this.marcas = marcas;
+    }
 }

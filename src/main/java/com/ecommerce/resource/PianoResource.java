@@ -34,6 +34,7 @@ public class PianoResource {
     }
 
     @POST
+    @Transactional
     public Response criarPiano(@Valid PianoDTO dto) {
         return Response.status(Response.Status.CREATED).entity(service.create(dto)).build();
     }

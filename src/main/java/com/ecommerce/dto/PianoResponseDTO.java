@@ -10,7 +10,9 @@ public record PianoResponseDTO(
     int numeroDeTeclas,
     boolean possuiPedais,
     String material,
-    TipoPiano tipo
+    TipoPiano tipo,
+    String marca,
+    String fornecedor
 ) {
     public static PianoResponseDTO valueOf(Piano piano) {
         
@@ -23,7 +25,9 @@ public record PianoResponseDTO(
             piano.getNumerodeteclas(),
             piano.getPossuipedais(),
             piano.getMaterial(),
-            piano.getTipo()
+            piano.getTipo(),
+            piano.getMarca().getNome(),
+            piano.getFornecedor().getNome()
         );
     }
 }

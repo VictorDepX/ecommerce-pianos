@@ -13,12 +13,21 @@ public record PianoDTO(
     @NotEmpty(message = "O Piano deve ter a quantidade de teclas")
     @Max(88)
     Integer numeroDeTeclas,
+
     boolean possuiPedais,
+
     String material,
+
     TipoPiano tipo,
 
     @NotNull
     @Min(value = 1, message = "Não pode ser Nulo")
-    Integer idPiano) {
+    Integer idPiano,
+    
+    @NotNull 
+    Long marcaId,
+    
+    @NotNull 
+    Long fornecedorId) {
 
 }

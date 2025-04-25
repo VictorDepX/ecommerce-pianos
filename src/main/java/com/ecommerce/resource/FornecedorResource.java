@@ -3,6 +3,7 @@ package com.ecommerce.resource;
 import com.ecommerce.dto.FornecedorRequestDTO;
 import com.ecommerce.service.FornecedorService;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -46,6 +47,7 @@ public class FornecedorResource {
     }
 
     @POST
+    @Transactional
     public void criarFornecedor(@Valid FornecedorRequestDTO dto) {
         service.salvar(dto);
     }

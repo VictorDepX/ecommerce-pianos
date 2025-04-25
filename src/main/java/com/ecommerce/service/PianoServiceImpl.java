@@ -3,6 +3,8 @@ package com.ecommerce.service;
 import com.ecommerce.model.Piano;
 import com.ecommerce.dto.PianoDTO;
 import com.ecommerce.dto.PianoResponseDTO;
+import com.ecommerce.repository.FornecedorRepository;
+import com.ecommerce.repository.MarcaRepository;
 import com.ecommerce.repository.PianoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,6 +18,10 @@ public class PianoServiceImpl implements PianoService {
     
     @Inject
     PianoRepository pianoRepository;
+    @Inject 
+    MarcaRepository marcaRepository;
+    @Inject 
+    FornecedorRepository fornecedorRepository;
 
     @Override
     @Transactional
@@ -27,6 +33,8 @@ public class PianoServiceImpl implements PianoService {
         novoPiano.setPossuipedais(dto.possuiPedais());
         novoPiano.setMaterial(dto.material());
         novoPiano.setTipo(dto.tipo());
+        novoPiano.setMarca(marcaRepository.findById(dto.marcaId()));
+        novoPiano.setFornecedor(fornecedorRepository.findById(dto.fornecedorId()));
 
         pianoRepository.persist(novoPiano);
         return PianoResponseDTO.valueOf(novoPiano);
@@ -44,7 +52,9 @@ public class PianoServiceImpl implements PianoService {
         edicaoPiano.setNumerodeteclas(piano.numeroDeTeclas());
         edicaoPiano.setPossuipedais(piano.possuiPedais());
         edicaoPiano.setMaterial(piano.material());
-        edicaoPiano.setTipo(piano.tipo());    }
+        edicaoPiano.setTipo(piano.tipo());
+        edicaoPiano.setMarca(marcaRepository.findById(piano.marcaId()));
+        edicaoPiano.setFornecedor(fornecedorRepository.findById(piano.fornecedorId()));   }
 
     @Override
     @Transactional
@@ -60,16 +70,15 @@ public class PianoServiceImpl implements PianoService {
     }
 
     @Override
-    public PianoResponseDTO buscarPorId(long id) {
-        return PianoResponseDTO.valueOf(pianoRepository.findById(id));
-    }
-
-
-
-    @Override
     public Response buscarPorFabricante(String fabricante) {
         Piano p = pianoRepository.buscarPorFabricante(fabricante);
         if (p == null) return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(PianoResponseDTO.valueOf(p)).build();
     }
+
+    @Override
+    public Response buscarPorId(long id) {
+        Piano p = pianoRepository.findById(id);
+        if (p == null) return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(PianoResponseDTO.valueOf(p)).build();    }
 }

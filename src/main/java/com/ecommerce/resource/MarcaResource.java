@@ -1,7 +1,7 @@
 package com.ecommerce.resource;
 
-import com.ecommerce.dto.MunicipioRequestDTO;
-import com.ecommerce.service.MunicipioService;
+import com.ecommerce.dto.MarcaRequestDTO;
+import com.ecommerce.service.MarcaService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -9,13 +9,12 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/municipios")
+@Path("/marcas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class MunicipioResource {
+public class MarcaResource {
 
-    @Inject
-    MunicipioService service;
+    @Inject MarcaService service;
 
     @GET
     public Response listarTodos() {
@@ -24,25 +23,27 @@ public class MunicipioResource {
 
     @GET
     @Path("/{id}")
-    public Response buscarPorId(@PathParam("id") Long id) {
+    public Response buscarMarcas(@PathParam("id") Long id) {
         return service.buscarPorId(id);
     }
 
     @POST
     @Transactional
-    public void criarMunicipio(@Valid MunicipioRequestDTO dto) {
+    public void criarMarcas(@Valid MarcaRequestDTO dto) {
         service.salvar(dto);
     }
 
     @PUT
     @Path("/{id}")
-    public void atualizarMunicipio(@PathParam("id") Long id, @Valid MunicipioRequestDTO dto) {
+    @Transactional
+    public void atualizarMarcas(@PathParam("id") Long id, @Valid MarcaRequestDTO dto) {
         service.atualizar(id, dto);
     }
 
     @DELETE
     @Path("/{id}")
-    public void deletarMunicipio(@PathParam("id") Long id) {
+    @Transactional
+    public void deletarMarcas(@PathParam("id") Long id) {
         service.deletar(id);
     }
 }

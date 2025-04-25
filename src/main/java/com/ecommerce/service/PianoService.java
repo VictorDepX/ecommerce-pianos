@@ -13,7 +13,7 @@ public interface PianoService {
     PianoResponseDTO create(PianoDTO piano);
     void update(long id, PianoDTO piano);
     void delete(long id);
-    PianoResponseDTO buscarPorId(long id);
+    Response buscarPorId(long id);
     Response buscarPorFabricante(String fabricante);
     List<PianoResponseDTO> listarTodos();
 

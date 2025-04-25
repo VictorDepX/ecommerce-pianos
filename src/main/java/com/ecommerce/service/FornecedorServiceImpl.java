@@ -4,6 +4,8 @@ import com.ecommerce.dto.FornecedorRequestDTO;
 import com.ecommerce.dto.FornecedorResponseDTO;
 import com.ecommerce.model.Fornecedor;
 import com.ecommerce.repository.FornecedorRepository;
+import com.ecommerce.repository.MarcaRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
@@ -16,6 +18,8 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Inject
     FornecedorRepository repository;
+    @Inject 
+    MarcaRepository marcaRepository;
 
     @Override
     public Response listarTodos() {
@@ -58,6 +62,11 @@ public class FornecedorServiceImpl implements FornecedorService {
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());
         fornecedor.setTelefone(dto.telefone());
+        if (dto.marcasIds() != null) {
+            fornecedor.setMarcas(dto.marcasIds().stream()
+                .map(marcaRepository::findById)
+                .toList());
+        }    
         repository.persist(fornecedor);
     }
 
@@ -67,6 +76,11 @@ public class FornecedorServiceImpl implements FornecedorService {
         f.setNome(dto.nome());
         f.setCnpj(dto.cnpj());
         f.setTelefone(dto.telefone());
+        if (dto.marcasIds() != null) {
+            f.setMarcas(dto.marcasIds().stream()
+                .map(marcaRepository::findById)
+                .toList());
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.ecommerce.resource;
 import com.ecommerce.dto.EstadoRequestDTO;
 import com.ecommerce.service.EstadoService;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -34,7 +35,8 @@ public class EstadoResource {
     }
 
     @POST
-    public void salvarEstado(@Valid EstadoRequestDTO dto) {
+    @Transactional
+    public void criarEstado(@Valid EstadoRequestDTO dto) {
         service.salvar(dto);
     }
 
