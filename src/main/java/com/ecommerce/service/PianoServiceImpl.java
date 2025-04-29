@@ -28,6 +28,7 @@ public class PianoServiceImpl implements PianoService {
     public PianoResponseDTO create(PianoDTO dto) {
         Piano novoPiano = new Piano();
         novoPiano.setModelo(dto.modelo());
+        novoPiano.setPreco(dto.preco());
         novoPiano.setFabricante(dto.fabricante());
         novoPiano.setNumerodeteclas(dto.numeroDeTeclas());
         novoPiano.setPossuipedais(dto.possuiPedais());
@@ -48,6 +49,7 @@ public class PianoServiceImpl implements PianoService {
             throw new WebApplicationException("Piano não encontrado", Response.Status.NOT_FOUND);
         }
         edicaoPiano.setModelo(piano.modelo());
+        edicaoPiano.setPreco(piano.preco());
         edicaoPiano.setFabricante(piano.fabricante());
         edicaoPiano.setNumerodeteclas(piano.numeroDeTeclas());
         edicaoPiano.setPossuipedais(piano.possuiPedais());

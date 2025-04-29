@@ -3,5 +3,5 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("EnderecoCliente")
-public class EnderecoCliente extends Endereco {}
+@DiscriminatorValue("EnderecoPedido")
+public class EnderecoPedido extends Endereco {}

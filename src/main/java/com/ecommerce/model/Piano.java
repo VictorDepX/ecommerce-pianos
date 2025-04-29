@@ -9,6 +9,16 @@ public class Piano extends DefaultEntity {
     @Column(length = 60, nullable = false)
     private String modelo;
 
+    private Double preco;
+
+    public Double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
     private String fabricante;
     
     private Integer numeroDeTeclas;

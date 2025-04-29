@@ -6,6 +6,7 @@ import com.ecommerce.enumerator.TipoPiano;
 public record PianoResponseDTO(
     Long id,
     String modelo,
+    Double preco,
     String fabricante,
     int numeroDeTeclas,
     boolean possuiPedais,
@@ -21,6 +22,7 @@ public record PianoResponseDTO(
         return new PianoResponseDTO(
             piano.getId(),
             piano.getModelo(),
+            piano.getPreco(),
             piano.getFabricante(),
             piano.getNumerodeteclas(),
             piano.getPossuipedais(),

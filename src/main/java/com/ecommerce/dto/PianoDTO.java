@@ -8,7 +8,11 @@ public record PianoDTO(
 
     @NotBlank(message = "Não pode estar vazio")
     String modelo,
+
     String fabricante,
+
+    @NotNull 
+    Double preco,
     
     @NotEmpty(message = "O Piano deve ter a quantidade de teclas")
     @Max(88)

@@ -19,16 +19,16 @@ public class Cliente extends Pessoa {
         this.usuario = usuario;
     }
 
-    // @OneToMany
-    // private List<EnderecoCliente> enderecos;
+    @OneToMany
+    private List<EnderecoCliente> enderecos;
 
-    // public List<EnderecoCliente> getEnderecos() {
-    //     return enderecos;
-    // }
+    public List<EnderecoCliente> getEnderecos() {
+        return enderecos;
+    }
 
-    // public void setEnderecos(List<EnderecoCliente> enderecos) {
-    //     this.enderecos = enderecos;
-    // }
+    public void setEnderecos(List<EnderecoCliente> enderecos) {
+        this.enderecos = enderecos;
+    }
 
 
 }
