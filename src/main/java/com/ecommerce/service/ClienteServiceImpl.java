@@ -13,17 +13,15 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ClienteServiceImpl implements ClienteService {
 
     @Inject ClienteRepository repository;
 
-    public Response listarTodos() {
-        List<ClienteResponseDTO> list = repository.listAll()
-            .stream().map(ClienteResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(list).build();
+    public List<ClienteResponseDTO> listarTodos() {
+        return repository.findAll().stream().map(ClienteResponseDTO::fromEntity).toList();
+
     }
 
     public Response buscarPorId(Long id) {
@@ -32,7 +30,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Transactional
-    public void salvar(ClienteRequestDTO dto) {
+    public ClienteResponseDTO salvar(ClienteRequestDTO dto) {
         Cliente c = new Cliente();
         Usuario u = new Usuario();
         u.setEmail(dto.email());
@@ -43,6 +41,7 @@ public class ClienteServiceImpl implements ClienteService {
         c.setCpf(dto.cpf());
         c.setUsuario(u);
         repository.persist(c);
+        return ClienteResponseDTO.fromEntity(c);
     }
 
     @Transactional

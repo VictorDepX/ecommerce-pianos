@@ -11,9 +11,12 @@ import jakarta.persistence.PreUpdate;
 
 @MappedSuperclass
 public class DefaultEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAlteracao;
 

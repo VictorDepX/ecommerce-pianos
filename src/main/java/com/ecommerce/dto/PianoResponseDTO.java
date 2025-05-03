@@ -15,7 +15,7 @@ public record PianoResponseDTO(
     String marca,
     String fornecedor
 ) {
-    public static PianoResponseDTO valueOf(Piano piano) {
+    public static PianoResponseDTO fromEntity(Piano piano) {
         
         if (piano == null)
             return null;

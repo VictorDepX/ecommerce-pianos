@@ -24,24 +24,27 @@ public class MunicipioResource {
 
     @GET
     @Path("/{id}")
+    @Transactional
     public Response buscarPorId(@PathParam("id") Long id) {
-        return service.buscarPorId(id);
+        return Response.ok().entity(service.buscarPorId(id)).build();
     }
 
     @POST
     @Transactional
-    public void criarMunicipio(@Valid MunicipioRequestDTO dto) {
-        service.salvar(dto);
+    public Response criarMunicipio(@Valid MunicipioRequestDTO dto) {
+        return Response.status(Response.Status.CREATED).entity(service.salvar(dto)).build();
     }
 
     @PUT
     @Path("/{id}")
+    @Transactional
     public void atualizarMunicipio(@PathParam("id") Long id, @Valid MunicipioRequestDTO dto) {
         service.atualizar(id, dto);
     }
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public void deletarMunicipio(@PathParam("id") Long id) {
         service.deletar(id);
     }

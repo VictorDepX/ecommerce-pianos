@@ -27,6 +27,7 @@ public class Fornecedor extends DefaultEntity {
         joinColumns = @JoinColumn(name = "fornecedor_id"),
         inverseJoinColumns = @JoinColumn(name = "marca_id")
     )
+    @NotEmpty
     private List<Marca> marcas;
 
     public String getNome() {

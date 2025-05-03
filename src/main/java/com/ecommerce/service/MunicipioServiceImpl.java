@@ -30,27 +30,27 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
-    public Response buscarPorId(Long id) {
-        Municipio m = repository.findById(id);
-        if (m == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(MunicipioResponseDTO.fromEntity(m)).build();
+    public MunicipioResponseDTO buscarPorId(Long id) {
+        return MunicipioResponseDTO.fromEntity(repository.findById(id));
+
     }
 
     @Override
-    public void salvar(MunicipioRequestDTO dto) {
+    public MunicipioResponseDTO salvar(MunicipioRequestDTO dto) {
         Estado estado = estadoRepository.findById(dto.estadoId());
         Municipio m = new Municipio();
         m.setNome(dto.nome());
         m.setEstado(estado);
         repository.persist(m);
+
+        return MunicipioResponseDTO.fromEntity(m);
     }
 
     @Override
     public void atualizar(Long id, MunicipioRequestDTO dto) {
-        Estado estado = estadoRepository.findById(dto.estadoId());
         Municipio m = repository.findById(id);
         m.setNome(dto.nome());
-        m.setEstado(estado);
+        m.setEstado(estadoRepository.findById(dto.estadoId()));
     }
 
     @Override

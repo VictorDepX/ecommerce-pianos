@@ -9,30 +9,23 @@ import com.ecommerce.repository.FuncionarioRepository;
 import com.ecommerce.enumerator.Perfil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Inject FuncionarioRepository repository;
 
-    public Response listarTodos() {
-        List<FuncionarioResponseDTO> list = repository.listAll()
-            .stream().map(FuncionarioResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(list).build();
+    public List<FuncionarioResponseDTO> listarTodos() {
+        return repository.findAll().stream().map(FuncionarioResponseDTO::fromEntity).toList();
     }
 
-    public Response buscarPorId(Long id) {
-        Funcionario f = repository.findById(id);
-        return Response.ok(FuncionarioResponseDTO.fromEntity(f)).build();
+    public FuncionarioResponseDTO buscarPorId(Long id) {
+        return FuncionarioResponseDTO.fromEntity(repository.findById(id));
     }
 
-    @Transactional
-    public void salvar(FuncionarioRequestDTO dto) {
+    public FuncionarioResponseDTO salvar(FuncionarioRequestDTO dto) {
         Funcionario f = new Funcionario();
         Usuario u = new Usuario();
         u.setEmail(dto.email());
@@ -45,9 +38,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         f.setDepartamento(dto.departamento());
         f.setUsuario(u);
         repository.persist(f);
+
+        return FuncionarioResponseDTO.fromEntity(f);
     }
 
-    @Transactional
     public void atualizar(Long id, FuncionarioRequestDTO dto) {
         Funcionario f = repository.findById(id);
         f.setNome(dto.nome());
@@ -59,7 +53,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         f.getUsuario().setSenha(dto.senha());
     }
 
-    @Transactional
     public void deletar(Long id) {
         repository.deleteById(id);
     }

@@ -4,36 +4,41 @@ import com.ecommerce.service.ClienteService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 
 @Path("/clientes")
 public class ClienteResource {
     @Inject ClienteService service;
 
     @GET
-    public Object listarTodos() {
-        return service.listarTodos();
+    public Response listarTodos() {
+        return Response.ok().entity(service.listarTodos()).build();
     }
 
     @GET
     @Path("/{id}")
-    public Object buscarClientes(@PathParam("id") Long id) {
+    public Response buscarPorId(@PathParam("id") Long id) {
         return service.buscarPorId(id);
     }
 
     @POST
-    public void criarCliente(@Valid ClienteRequestDTO dto) {
-        service.salvar(dto);
+    public Response criarCliente(@Valid ClienteRequestDTO dto) {
+        return Response.status(Response.Status.CREATED).entity(service.salvar(dto)).build();
     }
 
     @PUT
     @Path("/{id}")
-    public void atualizarCliente(@PathParam("id") Long id, @Valid ClienteRequestDTO dto) {
+    public Response atualizarCliente(@PathParam("id") Long id, @Valid ClienteRequestDTO dto) {
         service.atualizar(id, dto);
+        return Response.noContent().build();
+
     }
 
     @DELETE
     @Path("/{id}")
-    public void deletarCliente(@PathParam("id") Long id) {
+    public Response deletarCliente(@PathParam("id") Long id) {
         service.deletar(id);
+        return Response.noContent().build();
+
     }
 }

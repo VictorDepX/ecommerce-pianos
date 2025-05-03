@@ -10,6 +10,10 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "usuarios")
 public class Usuario extends DefaultEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Email @NotBlank
     private String email;
 

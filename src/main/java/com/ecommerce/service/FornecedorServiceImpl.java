@@ -8,9 +8,11 @@ import com.ecommerce.repository.MarcaRepository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -23,67 +25,70 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Override
     public Response listarTodos() {
-        List<FornecedorResponseDTO> lista = repository.listAll()
-            .stream().map(FornecedorResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(lista).build();
+        List<FornecedorResponseDTO> pedidos = repository.listAll()
+            .stream()
+            .map(FornecedorResponseDTO::fromEntity)
+            .collect(Collectors.toList());
+        return Response.ok(pedidos).build();
     }
 
     @Override
     public Response buscarPorId(Long id) {
         Fornecedor f = repository.findById(id);
         if (f == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(FornecedorResponseDTO.fromEntity(f)).build();
+        return Response.ok(FornecedorResponseDTO.fromEntity(f)).build();    
     }
 
     @Override
-    public Response buscarPorNome(String nome) {
+    public FornecedorResponseDTO buscarPorNome(String nome) {
         Fornecedor f = repository.buscarPorNome(nome);
-        if (f == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(FornecedorResponseDTO.fromEntity(f)).build();
+        return FornecedorResponseDTO.fromEntity(f);
     }
 
     @Override
-    public Response buscarPorCnpj(String cnpj) {
+    public FornecedorResponseDTO buscarPorCnpj(String cnpj) {
         Fornecedor f = repository.buscarPorCnpj(cnpj);
-        if (f == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(FornecedorResponseDTO.fromEntity(f)).build();
+        return FornecedorResponseDTO.fromEntity(f);   
     }
 
     @Override
-    public Response buscarPorTelefone(String telefone) {
+    public FornecedorResponseDTO buscarPorTelefone(String telefone) {
         Fornecedor f = repository.buscarPorTelefone(telefone);
-        if (f == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(FornecedorResponseDTO.fromEntity(f)).build();
+        return FornecedorResponseDTO.fromEntity(f);    
     }
 
     @Override
-    public void salvar(FornecedorRequestDTO dto) {
+    @Transactional
+    public FornecedorResponseDTO salvar(FornecedorRequestDTO dto) {
+        
         Fornecedor fornecedor = new Fornecedor();
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());
         fornecedor.setTelefone(dto.telefone());
-        if (dto.marcasIds() != null) {
-            fornecedor.setMarcas(dto.marcasIds().stream()
-                .map(marcaRepository::findById)
-                .toList());
-        }    
+        fornecedor.setMarcas(dto.marcasIds().stream()
+            .map(marcaRepository::findById)
+            .filter(Objects::nonNull)
+            .toList());
         repository.persist(fornecedor);
+
+        return FornecedorResponseDTO.fromEntity(fornecedor);
     }
 
     @Override
+    @Transactional
     public void atualizar(Long id, FornecedorRequestDTO dto) {
-        Fornecedor f = repository.findById(id);
-        f.setNome(dto.nome());
-        f.setCnpj(dto.cnpj());
-        f.setTelefone(dto.telefone());
-        if (dto.marcasIds() != null) {
-            f.setMarcas(dto.marcasIds().stream()
-                .map(marcaRepository::findById)
-                .toList());
-        }
+        Fornecedor fornecedor = repository.findById(id);
+        fornecedor.setNome(dto.nome());
+        fornecedor.setCnpj(dto.cnpj());
+        fornecedor.setTelefone(dto.telefone());
+        fornecedor.setMarcas(dto.marcasIds().stream()
+            .map(marcaRepository::findById)
+            .filter(Objects::nonNull)
+            .toList());
     }
 
     @Override
+    @Transactional
     public void deletar(Long id) {
         repository.deleteById(id);
     }

@@ -8,6 +8,10 @@ import java.util.List;
 @Table(name = "clientes")
 public class Cliente extends Pessoa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Usuario usuario;
 
@@ -19,7 +23,7 @@ public class Cliente extends Pessoa {
         this.usuario = usuario;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnderecoCliente> enderecos;
 
     public List<EnderecoCliente> getEnderecos() {

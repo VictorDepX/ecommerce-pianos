@@ -1,5 +1,7 @@
 package com.ecommerce.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,6 +17,9 @@ public class Estado extends DefaultEntity {
     @NotBlank(message = "A sigla é obrigatória")
     @Size(min = 2, max = 2, message = "A sigla deve ter exatamente 2 caracteres")
     private String sigla;
+
+    @OneToMany(mappedBy = "estado", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Endereco> enderecos;
 
     // Getters e Setters
     public String getNome() { return nome; }

@@ -1,60 +1,60 @@
-package com.ecommerce.service;
 
-import com.ecommerce.dto.EstadoRequestDTO;
+package com.ecommerce.service;
 import com.ecommerce.dto.EstadoResponseDTO;
+import com.ecommerce.dto.EstadoRequestDTO;
 import com.ecommerce.model.Estado;
 import com.ecommerce.repository.EstadoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class EstadoServiceImpl implements EstadoService {
-
+public class EstadoServiceImpl implements EstadoService{
     @Inject
-    EstadoRepository repository;
+    EstadoRepository estadoRepository;
 
     @Override
-    public Response listarTodos() {
-        List<EstadoResponseDTO> estados = repository.listAll()
-            .stream().map(EstadoResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(estados).build();
+    @Transactional
+    public EstadoResponseDTO salvar(EstadoRequestDTO dto) {
+        Estado estado = new Estado();
+
+        estado.setNome(dto.nome());
+        estado.setSigla(dto.sigla());
+
+        estadoRepository.persist(estado);
+
+        return EstadoResponseDTO.fromEntity(estado);
     }
 
     @Override
-    public Response buscarPorId(Long id) {
-        Estado e = repository.findById(id);
-        if (e == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(EstadoResponseDTO.fromEntity(e)).build();
-    }
-
-    @Override
-    public Response buscarPorSigla(String sigla) {
-        Estado e = repository.buscarPorSigla(sigla);
-        if (e == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(EstadoResponseDTO.fromEntity(e)).build();
-    }
-
-    @Override
-    public void salvar(EstadoRequestDTO dto) {
-        Estado e = new Estado();
-        e.setNome(dto.nome());
-        e.setSigla(dto.sigla());
-        repository.persist(e);
-    }
-
-    @Override
+    @Transactional
     public void atualizar(Long id, EstadoRequestDTO dto) {
-        Estado e = repository.findById(id);
-        e.setNome(dto.nome());
-        e.setSigla(dto.sigla());
+        Estado estado = estadoRepository.findById(id);
+
+        estado.setNome(dto.nome());
+        estado.setSigla(dto.sigla());
     }
 
     @Override
-    public void deletar(Long id) {
-        repository.deleteById(id);
+    @Transactional
+    public void deletar(long id) {
+        estadoRepository.deleteById(id);
+    }
+
+    @Override
+    public EstadoResponseDTO buscarPorId(long id) {
+        return EstadoResponseDTO.fromEntity(estadoRepository.findById(id));
+    }
+
+    @Override
+    public List<EstadoResponseDTO> listarTodos() {
+        return estadoRepository.findAll().stream().map(EstadoResponseDTO::fromEntity).toList();
+    }
+
+    @Override
+    public EstadoResponseDTO buscarPorSigla(String sigla) {
+        return EstadoResponseDTO.fromEntity(estadoRepository.buscarPorSigla(sigla));
     }
 }

@@ -42,7 +42,7 @@ public class PianoResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response atualizarPiano(Long id, PianoDTO dto) {
+    public Response atualizarPiano(@PathParam("id") Long id, @Valid PianoDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -51,10 +51,10 @@ public class PianoResource {
     @Path("/{id}")
     @Transactional
     public Response deletarPiano(Long id) {
-        service.delete(id);
+        service.deletar(id);
         return Response.noContent().build();
     }
-
+    
     @GET
     @Path("fabricante/fabricante")
     public Response buscarPorFabricante(@QueryParam("value") String fabricante) {

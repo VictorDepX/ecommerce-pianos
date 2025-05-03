@@ -6,7 +6,6 @@ import com.ecommerce.model.*;
 import com.ecommerce.repository.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDateTime;
@@ -38,8 +37,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    @Transactional
-    public void salvar(PedidoRequestDTO dto) {
+    public PedidoResponseDTO salvar(PedidoRequestDTO dto) {
         Pedido pedido = new Pedido();
         pedido.setDataCriacao(LocalDateTime.now());
         pedido.setStatus(dto.status());
@@ -72,10 +70,12 @@ public class PedidoServiceImpl implements PedidoService {
         for (ItemPedido item : itens) {
             itemPedidoRepository.persist(item);
         }
+
+        return PedidoResponseDTO.fromEntity(pedido);
+
     }
 
     @Override
-    @Transactional
     public void deletar(Long id) {
         pedidoRepository.deleteById(id);
     }

@@ -8,8 +8,6 @@ import com.ecommerce.repository.MarcaRepository;
 import com.ecommerce.repository.PianoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class PianoServiceImpl implements PianoService {
     FornecedorRepository fornecedorRepository;
 
     @Override
-    @Transactional
     public PianoResponseDTO create(PianoDTO dto) {
         Piano novoPiano = new Piano();
         novoPiano.setModelo(dto.modelo());
@@ -38,16 +35,12 @@ public class PianoServiceImpl implements PianoService {
         novoPiano.setFornecedor(fornecedorRepository.findById(dto.fornecedorId()));
 
         pianoRepository.persist(novoPiano);
-        return PianoResponseDTO.valueOf(novoPiano);
+        return PianoResponseDTO.fromEntity(novoPiano);
     }
 
     @Override
-    @Transactional
     public void update(long id, PianoDTO piano) {
         Piano edicaoPiano = pianoRepository.findById(id);
-        if (piano == null) {
-            throw new WebApplicationException("Piano não encontrado", Response.Status.NOT_FOUND);
-        }
         edicaoPiano.setModelo(piano.modelo());
         edicaoPiano.setPreco(piano.preco());
         edicaoPiano.setFabricante(piano.fabricante());
@@ -59,28 +52,25 @@ public class PianoServiceImpl implements PianoService {
         edicaoPiano.setFornecedor(fornecedorRepository.findById(piano.fornecedorId()));   }
 
     @Override
-    @Transactional
-    public void delete(long id) {
+    public void deletar(long id) {
         pianoRepository.deleteById(id);
-
     }
 
     @Override
     public List<PianoResponseDTO> listarTodos() {
         return pianoRepository.findAll().stream()
-                .map(p -> PianoResponseDTO.valueOf(p)).toList();
+                .map(p -> PianoResponseDTO.fromEntity(p)).toList();
     }
 
     @Override
     public Response buscarPorFabricante(String fabricante) {
         Piano p = pianoRepository.buscarPorFabricante(fabricante);
         if (p == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(PianoResponseDTO.valueOf(p)).build();
+        return Response.ok(PianoResponseDTO.fromEntity(p)).build();
     }
 
     @Override
-    public Response buscarPorId(long id) {
-        Piano p = pianoRepository.findById(id);
-        if (p == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(PianoResponseDTO.valueOf(p)).build();    }
+    public PianoResponseDTO buscarPorId(long id) {
+        return PianoResponseDTO.fromEntity(pianoRepository.findById(id));
+    }
 }
