@@ -1,11 +1,11 @@
-
 package com.ecommerce.service;
 
-import com.ecommerce.dto.FuncionarioRequestDTO;
 import com.ecommerce.dto.FuncionarioResponseDTO;
+import com.ecommerce.dto.FuncionarioRequestDTO;
 import com.ecommerce.model.Funcionario;
 import com.ecommerce.model.Usuario;
 import com.ecommerce.repository.FuncionarioRepository;
+import com.ecommerce.util.BCryptUtil;
 import com.ecommerce.enumerator.Perfil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,11 +25,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return FuncionarioResponseDTO.fromEntity(repository.findById(id));
     }
 
+    @Override
     public FuncionarioResponseDTO salvar(FuncionarioRequestDTO dto) {
         Funcionario f = new Funcionario();
         Usuario u = new Usuario();
         u.setEmail(dto.email());
-        u.setSenha(dto.senha());
+        u.setSenha(BCryptUtil.hashPassword(dto.senha()));
         u.setPerfil(Perfil.FUNCIONARIO);
         f.setNome(dto.nome());
         f.setTelefone(dto.telefone());
