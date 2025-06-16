@@ -1,5 +1,6 @@
 package com.ecommerce.dto;
 import com.ecommerce.enumerator.TipoEndereco;
+
 import jakarta.validation.constraints.NotBlank;
 
 public record EnderecoClienteRequestDTO(

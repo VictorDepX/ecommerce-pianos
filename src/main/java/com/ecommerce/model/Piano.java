@@ -25,6 +25,16 @@ public class Piano extends DefaultEntity {
 
     private boolean possuiPedais;
 
+    private Integer estoque;
+
+    public Integer getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
+    }
+
     private String material;
 
     @Enumerated(EnumType.STRING)

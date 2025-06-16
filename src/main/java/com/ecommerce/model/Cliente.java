@@ -2,6 +2,8 @@
 package com.ecommerce.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +26,7 @@ public class Cliente extends Pessoa {
     }
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EnderecoCliente> enderecos;
+    private List<EnderecoCliente> enderecos = new ArrayList<>();
 
     public List<EnderecoCliente> getEnderecos() {
         return enderecos;

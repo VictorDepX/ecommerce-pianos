@@ -2,7 +2,7 @@ package com.ecommerce.enumerator;
 
 public enum StatusPedido {
     PENDENTE,
-    PROCESSANDO,
+    PROCESSANDO_PAGAMENTO,
     ENVIADO,
     ENTREGUE,
     CANCELADO

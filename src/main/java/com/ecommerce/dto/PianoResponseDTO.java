@@ -12,6 +12,7 @@ public record PianoResponseDTO(
     boolean possuiPedais,
     String material,
     TipoPiano tipo,
+    Integer estoque,
     String marca,
     String fornecedor
 ) {
@@ -28,6 +29,7 @@ public record PianoResponseDTO(
             piano.getPossuipedais(),
             piano.getMaterial(),
             piano.getTipo(),
+            piano.getEstoque(),
             piano.getMarca().getNome(),
             piano.getFornecedor().getNome()
         );

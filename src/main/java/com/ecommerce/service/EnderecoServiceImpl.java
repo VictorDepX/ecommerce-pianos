@@ -14,7 +14,6 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EnderecoServiceImpl implements EnderecoService {
@@ -23,10 +22,10 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Inject EstadoRepository estadoRepository;
     @Inject MunicipioRepository municipioRepository;
 
-    public Response listarTodos() {
-        List<EnderecoResponseDTO> list = repository.listAll()
-            .stream().map(EnderecoResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(list).build();
+    public List<EnderecoResponseDTO> listarTodos() {
+        return repository.listAll().stream()
+            .map(EnderecoResponseDTO::fromEntity)
+            .toList();
     }
 
     public Response buscarPorId(Long id) {
@@ -36,7 +35,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Transactional
     public void salvar(EnderecoRequestDTO dto) {
-        Endereco endereco = new Endereco() {}; // classe abstrata sendo instanciada anonimamente
+        Endereco endereco = new Endereco() {};
         endereco.setRua(dto.rua());
         endereco.setNumero(dto.numero());
         endereco.setBairro(dto.bairro());

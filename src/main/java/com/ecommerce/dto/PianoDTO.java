@@ -26,6 +26,10 @@ public record PianoDTO(
     @NotNull(message = "O tipo do piano é obrigatório")
     TipoPiano tipo,
 
+    @NotNull(message = "A quantidade em estoque é obrigatória")
+    @Min(value = 0, message = "Não pode haver quantidade negativa em estoque")
+    Integer estoque,
+
     @NotNull(message = "O ID da marca é obrigatório")
     Long marcaId,
 

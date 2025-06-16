@@ -5,11 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record PedidoRequestDTO(
-    @NotNull Long 
-    clienteId,
 
     @NotNull Long 
-    enderecoPedidoId,
+    enderecoClienteId,
 
     @NotNull 
     List<ItemPedidoRequestDTO> itens,

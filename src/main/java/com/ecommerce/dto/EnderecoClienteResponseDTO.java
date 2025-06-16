@@ -10,13 +10,14 @@ public record EnderecoClienteResponseDTO(
     String cep,
     String tipoEndereco,
     String estado,
-    String municipio
+    String municipio,
+    String cliente
 ) {
     public static EnderecoClienteResponseDTO fromEntity(EnderecoCliente e) {
         return new EnderecoClienteResponseDTO(
             e.getId(), e.getRua(), e.getNumero(), e.getBairro(),
             e.getCidade(), e.getCep(), e.getTipoEndereco().name(),
-            e.getEstado().getNome(), e.getMunicipio().getNome()
+            e.getEstado().getNome(), e.getMunicipio().getNome(), e.getCliente().getNome()
         );
     }
 }

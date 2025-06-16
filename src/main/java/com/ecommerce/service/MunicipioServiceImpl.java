@@ -8,6 +8,7 @@ import com.ecommerce.repository.EstadoRepository;
 import com.ecommerce.repository.MunicipioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -23,10 +24,10 @@ public class MunicipioServiceImpl implements MunicipioService {
     EstadoRepository estadoRepository;
 
     @Override
-    public Response listarTodos() {
+    public List<MunicipioResponseDTO> listarTodos() {
         List<MunicipioResponseDTO> lista = repository.listAll()
             .stream().map(MunicipioResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(lista).build();
+        return lista;
     }
 
     @Override
@@ -36,6 +37,7 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
+    @Transactional
     public MunicipioResponseDTO salvar(MunicipioRequestDTO dto) {
         Estado estado = estadoRepository.findById(dto.estadoId());
         Municipio m = new Municipio();
@@ -47,6 +49,7 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
+    @Transactional
     public void atualizar(Long id, MunicipioRequestDTO dto) {
         Municipio m = repository.findById(id);
         m.setNome(dto.nome());
@@ -54,6 +57,7 @@ public class MunicipioServiceImpl implements MunicipioService {
     }
 
     @Override
+    @Transactional
     public void deletar(Long id) {
         repository.deleteById(id);
     }

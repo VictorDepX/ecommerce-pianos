@@ -24,12 +24,12 @@ public class FornecedorServiceImpl implements FornecedorService {
     MarcaRepository marcaRepository;
 
     @Override
-    public Response listarTodos() {
-        List<FornecedorResponseDTO> pedidos = repository.listAll()
+    public List<FornecedorResponseDTO> listarTodos() {
+        List<FornecedorResponseDTO> fornecedores = repository.listAll()
             .stream()
             .map(FornecedorResponseDTO::fromEntity)
             .collect(Collectors.toList());
-        return Response.ok(pedidos).build();
+        return fornecedores;
     }
 
     @Override

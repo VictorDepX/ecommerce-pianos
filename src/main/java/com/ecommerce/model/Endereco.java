@@ -9,6 +9,17 @@ import jakarta.validation.constraints.NotBlank;
 @DiscriminatorColumn(name = "DTYPE")
 public abstract class Endereco extends DefaultEntity {
 
+    @OneToOne
+    private EnderecoPedido enderecoPedido;
+
+    public EnderecoPedido getEnderecoPedido() {
+        return enderecoPedido;
+    }
+
+    public void setEnderecoPedido(EnderecoPedido enderecoPedido) {
+        this.enderecoPedido = enderecoPedido;
+    }
+
     @NotBlank
     private String rua;
 

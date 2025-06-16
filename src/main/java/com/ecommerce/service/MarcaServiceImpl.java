@@ -6,6 +6,7 @@ import com.ecommerce.model.Marca;
 import com.ecommerce.repository.MarcaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -17,10 +18,10 @@ public class MarcaServiceImpl implements MarcaService {
     @Inject MarcaRepository repository;
 
     @Override
-    public Response listarTodos() {
+    public List<MarcaResponseDTO> listarTodos() {
         List<MarcaResponseDTO> list = repository.listAll().stream()
             .map(MarcaResponseDTO::fromEntity).collect(Collectors.toList());
-        return Response.ok(list).build();
+        return list;
     }
 
     @Override
@@ -31,14 +32,17 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public void salvar(MarcaRequestDTO dto) {
+    @Transactional
+    public MarcaResponseDTO salvar(MarcaRequestDTO dto) {
         Marca m = new Marca();
         m.setNome(dto.nome());
         m.setCnpj(dto.cnpj());
         repository.persist(m);
+        return MarcaResponseDTO.fromEntity(m);
     }
 
     @Override
+    @Transactional
     public void atualizar(Long id, MarcaRequestDTO dto) {
         Marca m = repository.findById(id);
         m.setNome(dto.nome());
@@ -46,6 +50,7 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
+    @Transactional
     public void deletar(Long id) {
         repository.deleteById(id);
     }

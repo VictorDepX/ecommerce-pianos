@@ -13,16 +13,13 @@ public record FornecedorResponseDTO(
     List<String> marcas
 ) { 
     public static FornecedorResponseDTO fromEntity(Fornecedor fornecedor) {
-        
-        List<String> nomes = fornecedor.getMarcas().stream()
-            .map(Marca::getNome).toList();
-        
         return new FornecedorResponseDTO(
             fornecedor.getId(), 
             fornecedor.getNome(), 
             fornecedor.getCnpj(), 
             fornecedor.getTelefone(),
-            nomes
+            fornecedor.getMarcas().stream()
+            .map(Marca::getNome).toList()
             );
     }
 }

@@ -11,7 +11,7 @@ public record PedidoResponseDTO(
     LocalDateTime dataCriacao,
     StatusPedido status,
     Double total,
-    Long clienteId,
+    String clienteNome,
     Long enderecoPedidoId,
     List<ItemPedidoResponseDTO> itens
 ) {
@@ -21,7 +21,7 @@ public record PedidoResponseDTO(
             pedido.getDataCriacao(),
             pedido.getStatus(),
             pedido.getTotal(),
-            pedido.getCliente().getId(),
+            pedido.getCliente().getNome(),
             pedido.getEnderecoPedido().getId(),
             pedido.getItens().stream().map(ItemPedidoResponseDTO::fromEntity).collect(Collectors.toList())
         );

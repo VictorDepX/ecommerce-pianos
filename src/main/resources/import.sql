@@ -14,10 +14,14 @@ INSERT INTO municipios (nome, estado_id) VALUES
 
 -- Usuarios
 INSERT INTO usuarios (email, senha, perfil) VALUES
-('cliente1@email.com', 'senha123', 'CLIENTE'),
-('cliente2@email.com', 'senha123', 'CLIENTE'),
-('funcionario1@email.com', 'senha123', 'FUNCIONARIO'),
-('funcionario2@email.com', 'senha123', 'FUNCIONARIO');
+('cliente1@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZag0uEbQ.TI6rxYmdDQWw3Uog9p6e
+', 'CLIENTE'),
+('cliente2@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZag0uEbQ.TI6rxYmdDQWw3Uog9p6e
+', 'CLIENTE'),
+('funcionario1@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZag0uEbQ.TI6rxYmdDQWw3Uog9p6e
+', 'FUNCIONARIO'),
+('funcionario2@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZag0uEbQ.TI6rxYmdDQWw3Uog9p6e
+', 'FUNCIONARIO');
 
 -- Clientes
 INSERT INTO clientes (nome, telefone, cpf, usuario_id) VALUES
@@ -52,31 +56,25 @@ INSERT INTO fornecedor_marca (fornecedor_id, marca_id) VALUES
 (4, 4);
 
 -- Endereços para Clientes (DTYPE = EnderecoCliente)
-INSERT INTO endereco (rua, numero, bairro, cidade, cep, tipoEndereco, municipio_id, estado_id, DTYPE) VALUES
-('Rua Cliente 1', '100', 'Centro', 'São Paulo', '01000-000', 'COMERCIAL', 1, 1, 'EnderecoCliente'),
-('Rua Cliente 2', '200', 'Bairro Alto', 'Campinas', '13000-000', 'RESIDENCIAL', 2, 1, 'EnderecoCliente');
+INSERT INTO endereco (rua, numero, bairro, cidade, cep, tipoEndereco, municipio_id, estado_id, cliente_id, DTYPE) VALUES
+('Rua Cliente 1', '100', 'Centro', 'São Paulo', '01000-000', 'COMERCIAL', 1, 1, 1, 'EnderecoCliente'),
+('Rua Cliente 2', '200', 'Bairro Alto', 'Campinas', '13000-000', 'RESIDENCIAL', 2, 1, 2, 'EnderecoCliente');
 
 -- Endereços para Pedidos (DTYPE = EnderecoPedido)
 INSERT INTO endereco (rua, numero, bairro, cidade, cep, tipoEndereco, municipio_id, estado_id, DTYPE) VALUES
 ('Rua Entrega 1', '300', 'Jardins', 'São Paulo', '01400-000', 'COMERCIAL', 1, 1, 'EnderecoPedido'),
 ('Rua Entrega 2', '400', 'Botafogo', 'Rio de Janeiro', '22250-040', 'RESIDENCIAL', 3, 2, 'EnderecoPedido');
 
--- Associação Clientes -> Endereços
-INSERT INTO clientes_Endereco (Cliente_id, enderecos_id) VALUES
-(1, 1),
-(2, 2);
-
 -- Pianos
-INSERT INTO piano (modelo, preco, fabricante, numeroDeTeclas, possuiPedais, material, tipo, marca_id, fornecedor_id) VALUES
-('Modelo A', 5000.00, 'Fabricante 1', 88, true, 'Madeira', 'ACUSTICO', 1, 1),
-('Modelo B', 3000.00, 'Fabricante 2', 76, true, 'Plástico', 'DIGITAL', 2, 2),
-('Modelo C', 4000.00, 'Fabricante 3', 88, false, 'Madeira', 'HIBRIDO', 3, 3),
-('Modelo D', 6000.00, 'Fabricante 4', 88, true, 'Metal', 'ACUSTICO', 4, 4);
+INSERT INTO piano (modelo, preco, fabricante, numeroDeTeclas, possuiPedais, material, tipo, estoque, marca_id, fornecedor_id) VALUES
+('Modelo A', 5000.00, 'Fabricante 1', 88, true, 'Madeira', 'ACUSTICO', 3, 1, 1),
+('Modelo B', 3000.00, 'Fabricante 2', 76, true, 'Plástico', 'DIGITAL', 3, 2, 2),
+('Modelo C', 4000.00, 'Fabricante 3', 88, false, 'Madeira', 'HIBRIDO', 3, 3, 3),
+('Modelo D', 6000.00, 'Fabricante 4', 88, true, 'Metal', 'ACUSTICO', 3, 4, 4);
 
 -- Pedidos
 INSERT INTO pedido (dataCriacao, status, total, cliente_id, endereco_pedido_id) VALUES
 (now(), 'PENDENTE', 10000.00, 1, 3),
-(now(), 'PROCESSANDO', 7000.00, 2, 4),
 (now(), 'ENVIADO', 4000.00, 1, 3),
 (now(), 'ENTREGUE', 6000.00, 2, 4);
 

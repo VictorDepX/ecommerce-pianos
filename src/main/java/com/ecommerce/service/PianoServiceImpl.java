@@ -8,6 +8,7 @@ import com.ecommerce.repository.MarcaRepository;
 import com.ecommerce.repository.PianoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class PianoServiceImpl implements PianoService {
     FornecedorRepository fornecedorRepository;
 
     @Override
+    @Transactional
     public PianoResponseDTO create(PianoDTO dto) {
         Piano novoPiano = new Piano();
         novoPiano.setModelo(dto.modelo());
@@ -31,6 +33,7 @@ public class PianoServiceImpl implements PianoService {
         novoPiano.setPossuipedais(dto.possuiPedais());
         novoPiano.setMaterial(dto.material());
         novoPiano.setTipo(dto.tipo());
+        novoPiano.setEstoque(dto.estoque());
         novoPiano.setMarca(marcaRepository.findById(dto.marcaId()));
         novoPiano.setFornecedor(fornecedorRepository.findById(dto.fornecedorId()));
 
@@ -39,6 +42,7 @@ public class PianoServiceImpl implements PianoService {
     }
 
     @Override
+    @Transactional
     public void update(long id, PianoDTO piano) {
         Piano edicaoPiano = pianoRepository.findById(id);
         edicaoPiano.setModelo(piano.modelo());
@@ -52,6 +56,7 @@ public class PianoServiceImpl implements PianoService {
         edicaoPiano.setFornecedor(fornecedorRepository.findById(piano.fornecedorId()));   }
 
     @Override
+    @Transactional
     public void deletar(long id) {
         pianoRepository.deleteById(id);
     }
