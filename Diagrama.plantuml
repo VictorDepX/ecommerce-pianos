@@ -1,4 +1,5 @@
 @startuml
+' ===== Pessoas =====
 abstract class Pessoa {
   - nome: String
   - telefone: String
@@ -25,6 +26,7 @@ class Cliente extends Pessoa {
   + Usuario: usuario
 }
 
+' ===== Fornecedor / Marca / Modelo =====
 class Fornecedor {
   - id: Long
   - nome: String
@@ -40,16 +42,54 @@ class Marca {
   + List<Fornecedor>: fornecedores
 }
 
-class Piano {
+class Modelo {
   - id: Long
-  - modelo: String
-  - preco: Double
-  - quantidadeEstoque: int
-  + TipoPiano: tipoPiano
-  + Marca: marca
-  + Fornecedor: fornecedor
+  - nome: String
+  - anoLancamento: int
 }
 
+' ===== Piano =====
+abstract class Piano {
+  - id: Long
+  - preco: Double
+  - quantidadeEstoque: int
+}
+
+class PianoAcustico
+class PianoDigital
+class PianoHibrido
+
+class EspecificacoesTecnicas {
+  - numeroTeclas: int
+  - acabamento: String
+  - conectividade: String
+  - polifoniaMaxima: int
+}
+
+class Dimensoes {
+  - altura: Double
+  - largura: Double
+  - profundidade: Double
+  - peso: Double
+}
+
+class Garantia {
+  - prazoMeses: int
+  - tipo: String
+}
+
+class ImagemProduto {
+  - url: String
+  - descricao: String
+}
+
+class Acessorio {
+  - id: Long
+  - nome: String
+  - preco: Double
+}
+
+' ===== Pedido =====
 class Pedido {
   - id: Long
   - dataCriacao: LocalDateTime
@@ -68,6 +108,7 @@ class ItemPedido {
   + Piano: piano
 }
 
+' ===== Pagamento =====
 abstract class Pagamento {
   - id: Long
   - dataPagamento: LocalDateTime
@@ -95,6 +136,7 @@ class Boleto extends Pagamento {
   - qr: String
 }
 
+' ===== Endereco =====
 class Endereco {
   - id: Long
   - rua: String
@@ -122,10 +164,11 @@ class Estado {
 class EnderecoPedido extends Endereco {}
 class EnderecoCliente extends Endereco {}
 
+' ===== Enums =====
 enum TipoPiano {
   - ACOUSTICO
   - DIGITAL
-  - ELETRONICO
+  - HIBRIDO
 }
 
 enum StatusPedido {
@@ -158,24 +201,36 @@ enum Perfil {
   - CLIENTE
 }
 
-Cliente "1" --> "*" Pedido
-Pedido "1" --> "*" ItemPedido
+' ===== Relacionamentos =====
 ItemPedido "1" -up-> "1" Piano
+Pedido "1" --> "*" ItemPedido
 Pedido "1" --> "1" EnderecoPedido
 Pedido "1" --> "1" Pagamento
 StatusPedido <-- Pedido
-Fornecedor "*" --> "*" Marca : fornece >
 Marca "*" --> "*" Fornecedor : representada por >
+Marca "1" --> "*" Piano
+Fornecedor "*" --> "*" Marca : fornece >
 Fornecedor "1" <-- "*" Piano
+Modelo "1" --> "*" Piano
 Endereco "1" --> "1" Municipio
-TipoEndereco <-- Endereco
 Municipio "1" --> "1" Estado
+TipoEndereco <-- Endereco
 MetodoPagamento <-- Pedido
 StatusPagamento <-up- Pagamento
-TipoPiano *-- Piano
 Perfil <-- Usuario
-Marca *-- Piano
+TipoPiano <-- Piano
 Cliente "1" --> "*" EnderecoCliente
 Cliente "1" --> "1" Usuario
+Cliente "1" --> "*" Pedido
 Funcionario "1" --> "1" Usuario
+Piano <|-- PianoAcustico
+Piano <|-- PianoDigital
+Piano <|-- PianoHibrido
+Piano *-- EspecificacoesTecnicas
+Piano *-- Dimensoes
+Piano *-- Garantia
+Piano *-- ImagemProduto
+Piano "1" -- "1" Garantia
+Piano "1" -- "0..*" ImagemProduto
+Piano "0..*" -- "0..*" Acessorio
 @enduml
