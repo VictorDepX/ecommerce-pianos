@@ -46,24 +46,46 @@ class Modelo {
   - id: Long
   - nome: String
   - anoLancamento: int
+  - quantTecla: int
 }
 
 ' ===== Piano =====
 abstract class Piano {
   - id: Long
+  - modelo: String
   - preco: Double
   - quantidadeEstoque: int
+  - anoFabricacao: int
+  - acabamento: String
 }
 
 class PianoAcustico
 class PianoDigital
 class PianoHibrido
 
-class EspecificacoesTecnicas {
-  - numeroTeclas: int
-  - acabamento: String
-  - conectividade: String
-  - polifoniaMaxima: int
+' ===== Composição técnica do Piano =====
+class Polifonia {
+  - maxNotas: int
+  - notasReais: int
+}
+
+class Conectividade {
+  - entradaMidi: Boolean
+  - saidaMidi: Boolean
+  - usb: Boolean
+  - bluetooth: Boolean
+  - wifi: Boolean
+}
+
+class PortaExtra {
+  - tipo: String
+  - descricao: String
+}
+
+class SistemaSom {
+  - numeroFalantes: int
+  - potenciaWatts: Double
+  - equalizador: Boolean
 }
 
 class Dimensoes {
@@ -202,15 +224,16 @@ enum Perfil {
 }
 
 ' ===== Relacionamentos =====
-ItemPedido "1" -up-> "1" Piano
+Cliente "1" --> "*" Pedido
 Pedido "1" --> "*" ItemPedido
+ItemPedido "1" -up-> "1" Piano
 Pedido "1" --> "1" EnderecoPedido
 Pedido "1" --> "1" Pagamento
 StatusPedido <-- Pedido
-Marca "*" --> "*" Fornecedor : representada por >
-Marca "1" --> "*" Piano
 Fornecedor "*" --> "*" Marca : fornece >
+Marca "*" --> "*" Fornecedor : representada por >
 Fornecedor "1" <-- "*" Piano
+Marca "1" --> "*" Piano
 Modelo "1" --> "*" Piano
 Endereco "1" --> "1" Municipio
 Municipio "1" --> "1" Estado
@@ -221,12 +244,14 @@ Perfil <-- Usuario
 TipoPiano <-- Piano
 Cliente "1" --> "*" EnderecoCliente
 Cliente "1" --> "1" Usuario
-Cliente "1" --> "*" Pedido
 Funcionario "1" --> "1" Usuario
 Piano <|-- PianoAcustico
 Piano <|-- PianoDigital
 Piano <|-- PianoHibrido
-Piano *-- EspecificacoesTecnicas
+Piano *-- Polifonia
+Piano *-- Conectividade
+Conectividade "1" *-- "*" PortaExtra
+Piano *-- SistemaSom
 Piano *-- Dimensoes
 Piano *-- Garantia
 Piano *-- ImagemProduto
