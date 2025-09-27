@@ -10,20 +10,17 @@ class Usuario {
   - id: Long
   - email: String
   - senha: String
-  + Perfil: perfil
 }
 
 class Funcionario extends Pessoa {
   - id: Long
   - salario: Double
   - departamento: String
-  + Usuario: usuario
 }
 
 class Cliente extends Pessoa {
   - id: Long
-  + List<EnderecoCliente>: enderecos
-  + Usuario: usuario
+  + enderecos: List<EnderecoCliente>
 }
 
 ' ===== Fornecedor / Marca / Modelo =====
@@ -32,14 +29,14 @@ class Fornecedor {
   - nome: String
   - cnpj: String
   - telefone: String
-  + List<Marca>: marcas
+  + marcas: List<Marca>
 }
 
 class Marca {
   - id: Long
   - nome: String
   - cnpj: String
-  + List<Fornecedor>: fornecedores
+  + fornecedores: List<Fornecedor>
 }
 
 class Modelo {
@@ -54,6 +51,7 @@ abstract class Piano {
   - id: Long
   - modelo: String
   - preco: Double
+  - descricao: String
   - quantidadeEstoque: int
   - anoFabricacao: int
   - acabamento: String
@@ -117,17 +115,12 @@ class Pedido {
   - dataCriacao: LocalDateTime
   - status: StatusPedido
   - total: Double
-  + List<ItemPedido>: itens
-  + Cliente: cliente
-  + EnderecoPedido: Endereco
-  + Pagamento: pagamento
 }
 
 class ItemPedido {
   - id: Long
   - quantidade: int
   - subtotal: Double
-  + Piano: piano
 }
 
 ' ===== Pagamento =====
@@ -135,7 +128,6 @@ abstract class Pagamento {
   - id: Long
   - dataPagamento: LocalDateTime
   - valorPago: Double
-  - Status: StatusPagamento 
 }
 
 class Pix extends Pagamento {
@@ -166,15 +158,11 @@ class Endereco {
   - bairro: String
   - cidade: String
   - cep: String
-  - tipoEndereco: TipoEndereco
-  + Municipio: municipio
-  + Estado: estado
 }
 
 class Municipio {
   - id: Long
   - nome: String
-  + Estado: estado
 }
 
 class Estado {
@@ -225,16 +213,17 @@ enum Perfil {
 
 ' ===== Relacionamentos =====
 Cliente "1" --> "*" Pedido
+Cliente "1" --> "*" EnderecoCliente
+Cliente "1" --> "1" Usuario
 Pedido "1" --> "*" ItemPedido
-ItemPedido "1" -up-> "1" Piano
 Pedido "1" --> "1" EnderecoPedido
 Pedido "1" --> "1" Pagamento
+ItemPedido "1" -up-> "1" Piano
 StatusPedido <-- Pedido
-Fornecedor "*" --> "*" Marca : fornece >
-Marca "*" --> "*" Fornecedor : representada por >
+Fornecedor "*" --> "*" Marca
 Fornecedor "1" <-- "*" Piano
-Marca "1" --> "*" Piano
-Modelo "1" --> "*" Piano
+Marca "1" <-- "*" Modelo
+Modelo "1" <-- "*" Piano
 Endereco "1" --> "1" Municipio
 Municipio "1" --> "1" Estado
 TipoEndereco <-- Endereco
@@ -242,16 +231,17 @@ MetodoPagamento <-- Pedido
 StatusPagamento <-up- Pagamento
 Perfil <-- Usuario
 TipoPiano <-- Piano
-Cliente "1" --> "*" EnderecoCliente
-Cliente "1" --> "1" Usuario
 Funcionario "1" --> "1" Usuario
 Piano <|-- PianoAcustico
 Piano <|-- PianoDigital
 Piano <|-- PianoHibrido
-Piano *-- Polifonia
-Piano *-- Conectividade
+PianoDigital *-- Polifonia
+PianoHibrido *-- Polifonia
+PianoDigital  *-- Conectividade
+PianoHibrido *-- Conectividade
 Conectividade "1" *-- "*" PortaExtra
-Piano *-- SistemaSom
+PianoDigital *-- SistemaSom
+PianoHibrido *-- SistemaSom
 Piano *-- Dimensoes
 Piano *-- Garantia
 Piano *-- ImagemProduto
